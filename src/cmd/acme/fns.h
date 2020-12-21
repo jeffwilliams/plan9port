@@ -95,7 +95,6 @@ void		flushwarnings(void);
 void		startplumbing(void);
 long	nlcount(Text*, long, long, long*);
 long	nlcounttopos(Text*, long, long, long);
-Rune*	parsetag(Window*, int, int*);
 
 Runestr	runestr(Rune*, uint);
 Range range(int, int);
