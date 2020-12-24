@@ -62,7 +62,7 @@ int bartflag			= TRUE;
  *  buttons highlight background.
  */
 
-#define C_TAGBG			0x282a2eff
+#define C_TAGBG			0x373b41ff
 #define C_TAGFG			0xfefefeff
 #define C_TAGHLBG		0x81a2beff
 #define C_TAGHLFG		0xffffffff
