@@ -664,6 +664,60 @@ textcomplete(Text *t)
 	return rp;
 }
 
+int iswordsep(Rune r) {
+	return isspace(r) || ispunct(r);
+}
+
+/*
+* Move cursor by one word. dir is the direction: -1 is left, 1 is right.
+*/
+void
+mvbyoneword(Text *t, int dir) {
+	uint q0;	
+	
+	if (t->file->b.nc == 0) {
+		return;
+	}
+	
+	typecommit(t);
+	q0 = t->q0;
+		
+	
+	if(q0 == t->file->b.nc)
+		q0 = t->file->b.nc - 1;
+	if(q0 < 0) {
+		q0 = 0;
+	}
+	
+	if(iswordsep(textreadc(t, q0))) {
+		while(q0<t->file->b.nc && q0 > 0 && iswordsep(textreadc(t, q0)))
+			q0+=dir;
+		if (dir < 0) {
+			while(q0 > 0 && !iswordsep(textreadc(t, q0)))
+				q0+=dir;
+			q0++;
+		}
+	} else {
+		while(q0<t->file->b.nc && q0 > 0 && !iswordsep(textreadc(t, q0)))
+			q0+=dir;
+		while(q0<t->file->b.nc && q0 > 0 && iswordsep(textreadc(t, q0)))
+			q0+=dir;
+		if (dir < 0) {
+			while(q0 > 0 && !iswordsep(textreadc(t, q0)))
+				q0+=dir;
+			q0++;
+		}		
+	}
+		
+	if(q0 == t->file->b.nc)
+		q0 = t->file->b.nc - 1;
+	if(q0 < 0) {
+		q0 = 0;
+	}
+	
+	textshow(t, q0, q0, TRUE);
+}
+
 void
 texttype(Text *t, Rune r)
 {
@@ -787,6 +841,19 @@ texttype(Text *t, Rune r)
 		while(q0<t->file->b.nc && textreadc(t, q0)!='\n')
 			q0++;
 		textshow(t, q0, q0, TRUE);
+		return;
+		
+/*
+ *  CTRL-Right moves right a word.
+ */
+	case 0x12:
+		mvbyoneword(t,1);
+		return;
+/*
+ *  CTRL-Left moves left a word.
+ */
+	case 0x11:
+		mvbyoneword(t,-1);
 		return;
 		
 /* I'll keep the MAC-keybindings 'cuz im such a nice guy */
