@@ -678,6 +678,9 @@ texttype(Text *t, Rune r)
 	if(t->what == Tag)
 		t->w->tagsafe = FALSE;
 
+	/* Uncomment the below line to print the hex value of the rune that the user typed. */
+	/*print("texttype: rune = 0x%hx\n", r);*/
+
 	nr = 1;
 	rp = &r;
 	switch(r){
