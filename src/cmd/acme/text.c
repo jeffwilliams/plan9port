@@ -855,7 +855,26 @@ texttype(Text *t, Rune r)
 	case 0x11:
 		mvbyoneword(t,-1);
 		return;
+/*
+ * CTRL-Home moves to the beginning of the file
+ */
+	case 0xd:
+		if (t->file->b.nc > 0){
+			typecommit(t);
+			textshow(t, 0, 0, TRUE);
+		}
+		return;
 		
+/*
+ * CTRL-End moves to the end of the file
+ */
+	case 0x18:
+		if (t->file->b.nc > 0){
+			typecommit(t);
+			textshow(t, t->file->b.nc-1, t->file->b.nc-1, TRUE);
+		}
+		return;
+ 
 /* I'll keep the MAC-keybindings 'cuz im such a nice guy */
 
 	case Kcmd+'c':	/* %C: copy */
